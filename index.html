@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>WhAt TiMe Is iT ?? TiCk ToCk tIcK tOcK...</title>
+<meta name="keywords" content="kozartae, kosate studio, kosate, clock, tick tock, weird clock" />
+<meta name="description" content="Clever, Cofused and Weird Clock. Tick tock... Tick tock... Tick tock..." />
+<meta property="og:image" content="http://kosatestudio.com/project/clock/thumnail.jpg" />
+<meta property="og:title" content="WhAt TiMe Is iT ??" />
+<meta property="og:type" content="website" />
+<meta property="fb:admins" content="100000418457798" />
+<link rel="shortcut icon" href="../../images/favicon.ico">
+<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-39468607-1']);
+  _gaq.push(['_setDomainName', 'kosatestudio.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<style type="text/css">
+a { text-decoration:none; color:#FFF; }
+
+.lfloat { float:left; }
+.rfloat { float:right; }
+.cfloat { clear:both; }
+
+html,body { 
+	height:100%; width:100%;
+	background:#111111 url('bg.jpg') no-repeat top center;
+	font-family: 'Roboto Condensed',helvetica,tahoma,arial,sans-serif;
+	text-shadow:#080808 3px 3px 1px;
+	color:#EEE;
+	padding:0px; margin:0px;
+}
+.white { color:#EEE; text-shadow:#080808 2px 2px 1px; }
+.dark { color:#151515; text-shadow:none; }
+
+#head { font-size:60px; }
+#hour { font-size:50px; }
+#minutes { font-size:40px; }
+#second { font-size:35px; }
+
+.divout { display:table; width:100%; height:100%; }
+.divmid { display:table-row; }
+.divin  { display:table-cell; vertical-align:middle; text-align:center; }
+
+#skip { 
+	padding:7px; width:150px; background-color:#080808; border:#080808 1px solid; margin:auto; margin-top:30px; 
+	font-weight:bold; cursor:pointer;
+	text-shadow:none;
+}
+#skip:hover { color:#000; background-color:#EEE; }
+
+.share { 
+	position:fixed;
+	background:#000; width:100%; box-shadow:#000 0px 0px 5px; text-shadow:none;
+	font-family:helvetica,tahoma,arial,sans-serif;
+	color:#FFF;
+	font-size:12px;
+}
+.shareinner { padding:7px; }
+</style>
+<script language="javascript" type="text/javascript">
+
+var h_ten = "TWENTY -";
+var mn_ten = "FTHIORFWENTY -";
+var digit = "ZNSEFIFXLVGHRTHWELOUIRVENETEEN";
+var skip = false;
+
+var hours,seconds,minutes;
+var refreshTime;
+
+var num = [
+	["",""],
+	["","ONE"],
+	["","TWO"],
+	["","THREE"],
+	["","FOUR"],
+	["","FIVE"],
+	["","SIX"],
+	["","SEVEN"],
+	["","EIGHT"],
+	["","NINE"],
+	["","TEN"],
+	["","ELEVEN"],
+	["","TWELVE"],
+	["","THIRTEEN"],
+	["","FOURTEEN"],
+	["","FIFTEEN"],
+	["","SIXTEEN"],
+	["","SEVENTEEN"],
+	["","EIGHTEEN"],
+	["","NINETEEN"]
+];
+
+function $(id) { return document.getElementById(id); }
+function ini() {
+	
+	document.getElementById("share-twt").setAttribute("src",
+	"https://platform.twitter.com/widgets/tweet_button.html?count=none&url="+encodeURIComponent(document.URL)+"&text="+encodeURIComponent("Check out some clever, cofused, weird clock. Tick tock... Tick tock...")+"&dnt=true");
+	
+	function slice_text( text ) {
+		var new_text = "";
+		for( var i=0; i<text.length; i++ ) new_text += "<span>"+text[i]+"</span>";
+		return new_text;
+	}
+	
+	$("h-ten").innerHTML = slice_text(h_ten)+" ";
+	$("sec-ten").innerHTML = $("mn-ten").innerHTML = slice_text(mn_ten)+" ";
+	$("sec-digit").innerHTML = $("mn-digit").innerHTML = $("h-digit").innerHTML = slice_text(digit)+" ";
+	
+	
+	for( var i = 20; i<=59; i++ ) {
+		num[i] = [];
+		num[i][1] = num[i%10][1];
+		num[i][0] = [0,0,"TWENTY","THIRTY","FORTY","FIFTY"][ Math.floor(i/10) ] + ( i%10 ? " -" : "");
+	}
+	num[0][1] = "ZERO"
+	
+	showtime();
+	refreshTime = setInterval(showtime,1000);
+}
+
+function showtime() {
+	
+	function spark( elm,source,comp ) {
+		var j = 0;
+		for( var i=0; i<comp.length; i++ ) {
+			if( source[j] == comp[i] ) {
+				elm[i].setAttribute("class","white");
+				j++;
+			} else {
+				elm[i].setAttribute("class","");
+			}
+		}
+	}
+	
+	if( !skip ) {
+		var date = new Date();
+		hours 	= date.getHours();
+		minutes = date.getMinutes();
+		seconds = date.getSeconds();
+	} else {
+		if( ++seconds >= 60 ) {
+			seconds = 0;
+			if( ++minutes >= 60 ) {
+				minutes = 0;
+				if( ++hours >= 24 ) hours = 0;
+			}
+		}
+	}
+	
+	spark( $("h-digit").getElementsByTagName("span")	,num[hours][1]		,digit );
+	spark( $("h-ten").getElementsByTagName("span")		,num[hours][0]		,h_ten );
+	
+	spark( $("mn-digit").getElementsByTagName("span")	,num[minutes][1]	,digit );
+	spark( $("mn-ten").getElementsByTagName("span")		,num[minutes][0]	,mn_ten );
+	$("mn-s").innerHTML = "MINUTE" + ( minutes <= 1 ? "" : "S" );
+	
+	spark( $("sec-digit").getElementsByTagName("span")	,num[seconds][1]	,digit );
+	spark( $("sec-ten").getElementsByTagName("span")	,num[seconds][0]	,mn_ten );
+	$("sec-s").innerHTML = "SECOND" + ( seconds <= 1 ? "" : "S" );
+	
+}
+
+function skip_time() {
+	if( skip == false ) { clearInterval( refreshTime ); refreshTime = setInterval( showtime,5 ); }
+	if( skip == true  ) { clearInterval( refreshTime ); refreshTime = setInterval( showtime,1000 ); }
+	skip = !skip;
+	$("skip").innerHTML = skip ? "STOP" : "SKIP";
+	showtime();
+}
+
+</script>
+</head>
+
+<body onload="ini()">
+<div class="share">
+	<div class="shareinner">
+        <div class="lfloat"><a href="../../">Kozartae Studio &copy; 2013</a></div>
+        <div class="rfloat">
+        	<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fkosatestudio.com%2Fproject%2Fclock%2F&amp;send=false&amp;layout=button_count&amp;width=75&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;locale=en_US" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:21px;" allowTransparency="true"></iframe>
+            <iframe id="share-twt" allowtransparency="true" frameborder="0" scrolling="no"  
+            style="width:60px; height:20px;"></iframe>
+        </div>
+        <div class="cfloat"></div>
+    </div>
+</div>
+<div class="divout">
+    <div class="divmid">
+        <div class="divin">
+        	<div id="head">IT IS</div>
+            <div id="hour">
+            	<span class="dark" id="h-ten"></span>
+                <span class="dark" id="h-digit"></span>
+                <span>O'CLOCK</span>
+            </div>
+            <div id="minutes">
+                <span>AND</span>
+                <span>
+                    <span class="dark" id="mn-ten"></span>
+                    <span class="dark" id="mn-digit"></span>
+                    <span id="mn-s">MINUTE</span>
+                </span>
+            </div>
+            <div id="second">
+                <span>AND</span>
+                <span>
+                    <span class="dark" id="sec-ten"></span>
+                    <span class="dark" id="sec-digit"></span>
+                    <span id="sec-s">SECOND</span>
+                </span>
+            </div>
+            <div id="skip" onclick="skip_time()">SKIP</div>
+        </div>
+    </div>
+</body>
+</html>
